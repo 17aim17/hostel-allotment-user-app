@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import AppRouter from './routers/AppRouter';
 import store from './store'
 
-import './firebase/firebase'
+// import './firebase/firebase'
 
 ReactDOM.render(<Provider store={store()}> <AppRouter /> </Provider>, document.getElementById('root'));
 

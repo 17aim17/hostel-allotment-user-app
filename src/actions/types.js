@@ -1,5 +1,6 @@
 export const GET_SESSION = "GET_SESSION"
 export const GET_ROOMS = "GET_ROOMS"
+export const ALLOT_ROOM = "ALLOT_ROOM"
 export const LOGIN = "LOGIN"
 export const LOGOUT = "LOGOUT"
 export const REGISTER = "REGISTER"

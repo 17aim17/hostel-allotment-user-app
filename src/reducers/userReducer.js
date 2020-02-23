@@ -1,7 +1,15 @@
-const initialState = {}
+import { REGISTER } from '../actions/types'
+
+const initialState = {
+
+}
+
 
 const userReducer = (state = initialState, action) => {
-    switch (action.payload) {
+    switch (action.type) {
+        case REGISTER:
+            const uid = action.payload
+            return { uid }
         default:
             return state
     }
