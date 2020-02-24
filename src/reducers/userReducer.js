@@ -1,8 +1,6 @@
-import { REGISTER } from '../actions/types'
+import { REGISTER, LOGIN } from '../actions/types'
 
-const initialState = {
-
-}
+const initialState = {}
 
 
 const userReducer = (state = initialState, action) => {
@@ -10,6 +8,10 @@ const userReducer = (state = initialState, action) => {
         case REGISTER:
             const uid = action.payload
             return { uid }
+        case LOGIN:
+            const id = action.payload
+            console.log(id);
+            return { ...state, uid: id }
         default:
             return state
     }
