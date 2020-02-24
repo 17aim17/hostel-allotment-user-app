@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { register } from '../actions/userActions'
-
+import formValidator from '../utils/validation'
 // let initialState = {
 //     full_name: '',
 //     email: '',
@@ -18,14 +18,14 @@ import { register } from '../actions/userActions'
 //     aadhaar_number: '',
 //     account_number: '',
 //     password: '',
-//     confirm_password: ''
+//     confirm_password: '',
 // }
 import initialState from '../fakedata/fake'
 
 class Register extends Component {
     constructor(props) {
         super(props)
-        this.state = { ...initialState }
+        this.state = { ...initialState, isError: false, errors: {} }
 
     }
 
@@ -39,31 +39,49 @@ class Register extends Component {
 
     onSubmit = (e) => {
         e.preventDefault()
-        const data = { ...this.state }
-        delete data["confirm_password"]
-        this.props.register(data)
+        const formData = { ...this.state }
+        delete formData["errors"]
+
+        const { isError, data, errors } = formValidator(formData)
+
+        if (isError) {
+            this.setState({ ...this.state, isError, errors: errors })
+        }
+        else {
+            this.props.register(data)
+        }
     }
+
+    renderInput(label, text, type) {
+        const error = this.state.errors[label]
+        let className = "form-control"
+        if (error) {
+            className += ' is-invalid'
+        }
+
+        return (
+            <div className="form-group">
+                <label htmlFor={label}>{text}</label>
+                <input type={type} className={className} name={label} value={this.state[label]} onChange={this.onChange} />
+                {error && <div className="invalid-feedback">
+                    {error}
+                </div>}
+            </div>
+        )
+    }
+
     render() {
         return (
             <div className="container border my-4 p-0">
                 <h2 className="card-title text-center p-2 bg-primary text-light">Register</h2>
-                <form onSubmit={this.onSubmit} autoComplete="off" className="p-sm-4">
+                <form onSubmit={this.onSubmit} autoComplete="off" className="p-sm-4 needs-validation" noValidate>
+                    {this.state.isError && <div className="alert alert-warning" role="alert">
+                        Fix all the errors please</div>}
                     <div className="row">
                         <div className="col-sm-6">
-                            <div className="form-group">
-                                <label htmlFor="full_name">Full Name</label>
-                                <input type="text" className="form-control" name="full_name" value={this.state.full_name} onChange={this.onChange} />
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="email">Email</label>
-                                <input type="text" className="form-control" name="email" value={this.state.email} onChange={this.onChange} />
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="roll_number">Enrollment number</label>
-                                <input type="text" className="form-control" name="roll_number" value={this.state.roll_number} onChange={this.onChange} />
-                            </div>
+                            {this.renderInput('full_name', 'Full Name', 'text')}
+                            {this.renderInput('email', 'Email', 'text')}
+                            {this.renderInput('roll_number', 'Enrollment Number', 'text')}
 
                             <div className="form-group">
                                 <label htmlFor="gender">Gender</label>
@@ -74,15 +92,8 @@ class Register extends Component {
                                 </select>
                             </div>
 
-                            <div className="form-group">
-                                <label htmlFor="course">Course</label>
-                                <input type="text" className="form-control" name="course" value={this.state.course} onChange={this.onChange} />
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="branch">Branch</label>
-                                <input type="text" className="form-control" name="branch" value={this.state.branch} onChange={this.onChange} />
-                            </div>
+                            {this.renderInput('course', 'Course', 'text')}
+                            {this.renderInput('branch', 'Branch', 'text')}
 
                             <div className="form-group">
                                 <label htmlFor="year">Year</label>
@@ -95,53 +106,23 @@ class Register extends Component {
                                 </select>
                             </div>
 
-                            <div className="form-group">
-                                <label htmlFor="address">Permanent Address</label>
-                                <input type="text" className="form-control" name="address" value={this.state.address} onChange={this.onChange} />
-                            </div>
+                            {this.renderInput('address', 'Permanent Address', 'text')}
+                            {this.renderInput('primary_contact', 'Primary Contact', 'text')}
 
-                            <div className="form-group">
-                                <label htmlFor="primary_contact">Primary Contact no. </label>
-                                <input type="text" className="form-control" name="primary_contact" value={this.state.primary_contact} onChange={this.onChange} />
-                            </div>
                         </div>
 
                         <div className="col-sm-6">
-                            <div className="form-group">
-                                <label htmlFor="father_name">Father's Name</label>
-                                <input type="text" className="form-control" name="father_name" value={this.state.father_name} onChange={this.onChange} />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="mother_name">Mother's Name</label>
-                                <input type="text" className="form-control" name="mother_name" value={this.state.mother_name} onChange={this.onChange} />
-                            </div>
-
-
-                            <div className="form-group">
-                                <label htmlFor="parent_contact">Parent's Contact </label>
-                                <input type="text" className="form-control" name="parent_contact" value={this.state.parent_contact} onChange={this.onChange} />
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="aadhaar_number">Aadhaar Card no.</label>
-                                <input type="text" className="form-control" name="aadhaar_number" value={this.state.aadhaar_number} onChange={this.onChange} />
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="account_number">Account no.</label>
-                                <input type="text" className="form-control" name="account_number" value={this.state.account_number} onChange={this.onChange} />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="password">Password</label>
-                                <input type="password" className="form-control" name="password" value={this.state.password} onChange={this.onChange} />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="confirm_password">Confirm Password</label>
-                                <input type="password" className="form-control" name="confirm_password" value={this.state.confirm_password} onChange={this.onChange} />
-                            </div>
-
+                            {this.renderInput('father_name', 'Father\'s name ', 'text')}
+                            {this.renderInput('mother_name', 'Mother\'s name ', 'text')}
+                            {this.renderInput('parent_contact', 'Parent Contact', 'text')}
+                            {this.renderInput('aadhaar_number', 'Aadhaar Card Number', 'text')}
+                            {this.renderInput('account_number', 'Bank Account Number', 'text')}
+                            {this.renderInput('password', 'Password', 'password')}
+                            {this.renderInput('confirm_password', 'Confirm Password', 'password')}
                         </div>
                     </div>
+                    {this.state.isError && <div className="alert alert-warning" role="alert">
+                        Fix all the errors please</div>}
                     <div className="row">
                         <div className="col-sm-4"></div>
                         <div className="col-sm-4">
@@ -149,6 +130,7 @@ class Register extends Component {
                         </div>
                         <div className="col-sm-4"></div>
                     </div>
+
                 </form>
             </div>
         )

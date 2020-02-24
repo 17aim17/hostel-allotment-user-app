@@ -1,4 +1,3 @@
-import generatePassword from 'password-generator'
 
 import { REGISTER, LOGIN, LOGOUT } from './types'
 
