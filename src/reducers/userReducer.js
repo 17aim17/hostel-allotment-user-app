@@ -9,9 +9,7 @@ const userReducer = (state = initialState, action) => {
             const uid = action.payload
             return { uid }
         case LOGIN:
-            const id = action.payload
-            console.log(id);
-            return { ...state, uid: id }
+            return { ...action.payload }
         default:
             return state
     }

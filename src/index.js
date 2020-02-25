@@ -4,7 +4,16 @@ import { Provider } from 'react-redux'
 import AppRouter from './routers/AppRouter';
 import store from './store'
 
-ReactDOM.render(<Provider store={store()}> <AppRouter /> </Provider>, document.getElementById('root'));
+import { getSessions } from './actions/sessionActions'
+import { startSetHostel } from './actions/roomActions'
+import { login } from './actions/userActions'
+
+const reduxStore = store()
+reduxStore.dispatch(getSessions())
+reduxStore.dispatch(login())
+reduxStore.dispatch(startSetHostel())
+
+ReactDOM.render(<Provider store={reduxStore}> <AppRouter /> </Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

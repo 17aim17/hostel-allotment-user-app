@@ -7,6 +7,10 @@ import history from '../routers/history'
 
 export const register = (data) => (dispatch, getState) => {
     console.log(data);
+    data.roomInfo = {
+        isAlloted: false,
+        room_number: null
+    }
     database.ref('users').push(data).then((ref) => {
         dispatch({
             type: REGISTER,
@@ -18,6 +22,12 @@ export const register = (data) => (dispatch, getState) => {
 export const login = () => {
     return {
         type: LOGIN,
-        payload: '1234567'
+        payload: {
+            uid: '-M0xI8iy5fqdhHSjsxGV',
+            roomInfo: {
+                isAlloted: false,
+                room_number: null
+            }
+        }
     }
 }
