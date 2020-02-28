@@ -1,10 +1,10 @@
 import { SET_HOSTELS } from '../actions/types'
-const initialState = []
+const initialState = {}
 
 const roomReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_HOSTELS:
-            return [...action.payload]
+            return { ...action.payload }
         default:
             return state
     }

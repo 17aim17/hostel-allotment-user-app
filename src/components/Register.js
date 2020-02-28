@@ -135,7 +135,7 @@ class Register extends Component {
                     <div className="row">
                         <div className="col-sm-6">
                             {this.renderInput('full_name', 'Full Name', 'text')}
-                            {this.renderInput('email', 'Email', 'text')}
+                            {this.renderInput('email', 'Email', 'email')}
                             {this.renderInput('roll_number', 'Enrollment Number', 'text')}
 
                             <div className="form-group">

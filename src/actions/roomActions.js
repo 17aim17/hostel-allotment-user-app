@@ -14,11 +14,51 @@ export const setHostels = data => ({
 //   }
 // ];
 
+// const toStateForm = snapshot => {
+//     let output = [];
+//     snapshot.forEach(snap => {
+//         let data = {};
+//         data["id"] = snap.key;
+//         data["name"] = snap.val().name;
+//         data["rooms"] = [];
+//         let index = 0;
+//         snap.forEach(roomSnap => {
+//             if (roomSnap.key !== "name") {
+//                 let roomObj = {
+//                     roomNumber: roomSnap.key,
+//                     occupancy: []
+//                 };
+//                 data["rooms"].push(roomObj);
+//                 roomSnap.forEach(roomNumberSnap => {
+//                     let obj = {
+//                         value: roomNumberSnap.key,
+//                         occupied: roomNumberSnap.val().occupied
+//                     };
+//                     data["rooms"][index].occupancy.push(obj);
+//                 });
+//                 index++;
+//             }
+//         });
+//         output.push(data);
+//     });
+//     return output;
+// };
+
+
+// let output = [
+//   {
+//     'BH-1':{
+//     name: "krishna",
+//     rooms: [{ roomNumber: 202, occupency: [{ value: 1, occupied: false }] }]
+// }
+//   }
+// ];
+
+
 const toStateForm = snapshot => {
-    let output = [];
+    let output = {};
     snapshot.forEach(snap => {
         let data = {};
-        data["id"] = snap.key;
         data["name"] = snap.val().name;
         data["rooms"] = [];
         let index = 0;
@@ -39,7 +79,7 @@ const toStateForm = snapshot => {
                 index++;
             }
         });
-        output.push(data);
+        output[snap.key] = data;
     });
     return output;
 };
