@@ -23,7 +23,7 @@ export const login = () => {
     return {
         type: LOGIN,
         payload: {
-            uid: '-M0xI8iy5fqdhHSjsxGV',
+            uid: '-M1BWepeA0gb6DURO1J7',
             roomInfo: {
                 isAlloted: false,
                 room_number: null

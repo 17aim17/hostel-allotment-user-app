@@ -21,7 +21,7 @@ class Allotment extends Component {
                     <p>{this.props.rooms[0].name}</p>
                     {this.props.rooms[0].rooms.map(room => {
 
-                        return <div>
+                        return <div key={room.roomNumber}>
                             <input type="radio" name="room" value={room.roomNumber} />
                             {room.roomNumber}
                         </div>
@@ -42,7 +42,8 @@ const mapSateToProps = (state) => {
 
     return {
         user: state.user,
-        rooms: state.rooms
+        rooms: state.rooms,
+        sessions: state.sessions
     }
 }
 

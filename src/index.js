@@ -6,11 +6,13 @@ import store from './store'
 
 import { getSessions } from './actions/sessionActions'
 import { startSetHostel } from './actions/roomActions'
+import { startSetBranch } from './actions/branchAction'
 import { login } from './actions/userActions'
 
 const reduxStore = store()
 reduxStore.dispatch(getSessions())
 reduxStore.dispatch(login())
+reduxStore.dispatch(startSetBranch())
 reduxStore.dispatch(startSetHostel())
 
 ReactDOM.render(<Provider store={reduxStore}> <AppRouter /> </Provider>, document.getElementById('root'));

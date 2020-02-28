@@ -49,6 +49,10 @@ export const startSetHostel = () => {
         database
             .ref("hostels")
             .on("value", snapshot => {
+                // let modifiedData = {}
+                // snapshot.forEach(childSnap => {
+                //     modifiedData[childSnap.key] = { ...childSnap.val() }
+                // })
                 let modifiedData = toStateForm(snapshot);
                 dispatch(setHostels(modifiedData));
             })

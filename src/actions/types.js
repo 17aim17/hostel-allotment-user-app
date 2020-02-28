@@ -1,5 +1,6 @@
-export const GET_SESSION = "GET_SESSION"
+export const SET_SESSION = "SET_SESSION"
 export const SET_HOSTELS = "SET_HOSTELS"
+export const SET_BRANCHES = "SET_BRANCHES"
 export const ALLOT_ROOM = "ALLOT_ROOM"
 export const LOGIN = "LOGIN"
 export const LOGOUT = "LOGOUT"

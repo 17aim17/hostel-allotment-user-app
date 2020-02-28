@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash'
 import { connect } from 'react-redux'
 import { register } from '../actions/userActions'
 import formValidator from '../utils/validation'
@@ -43,7 +44,6 @@ class Register extends Component {
         delete formData["errors"]
 
         const { isError, data, errors } = formValidator(formData)
-
         if (isError) {
             this.setState({ ...this.state, isError, errors: errors })
         }
@@ -63,6 +63,61 @@ class Register extends Component {
             <div className="form-group">
                 <label htmlFor={label}>{text}</label>
                 <input type={type} className={className} name={label} value={this.state[label]} onChange={this.onChange} />
+                {error && <div className="invalid-feedback">
+                    {error}
+                </div>}
+            </div>
+        )
+    }
+
+    renderBranch() {
+
+        const error = this.state.errors['branch']
+        let className = "form-control"
+        if (error) {
+            className += ' is-invalid'
+        }
+
+        return (
+            <div className="form-group">
+                <label htmlFor="branch">Branch</label>
+                <select className={className} name="branch" value={this.state.branch} onChange={this.onChange}>
+                    <option value="">Select Branch</option>
+                    {
+                        Object.keys(this.props.branch).map(b => <option key={b} value={b}>{b}</option>)
+                    }
+                </select>
+                {error && <div className="invalid-feedback">
+                    {error}
+                </div>}
+            </div>
+
+
+        )
+
+    }
+
+    renderYear() {
+        const error = this.state.errors['year']
+        let className = "form-control"
+        if (error) {
+            className += ' is-invalid'
+        }
+
+        let year = [];
+        const { branch } = this.state
+        if (branch && !_.isEmpty(this.props.branch)) {
+            year = Object.keys(this.props.branch[branch])
+        }
+        return (
+            <div className="form-group">
+                <label htmlFor="year">Year</label>
+                <select className={className} name="year" value={this.state.year} onChange={this.onChange}>
+                    <option value="">Select Year</option>
+                    {
+                        year.map(y => <option value={y} key={y}>{y}</option>)
+                    }
+                </select>
                 {error && <div className="invalid-feedback">
                     {error}
                 </div>}
@@ -91,26 +146,12 @@ class Register extends Component {
                                     <option value="female">Female</option>
                                 </select>
                             </div>
-
-                            {this.renderInput('course', 'Course', 'text')}
-                            {this.renderInput('branch', 'Branch', 'text')}
-
-                            <div className="form-group">
-                                <label htmlFor="year">Year</label>
-                                <select className="form-control" name="year" value={this.state.year} onChange={this.onChange}>
-                                    <option value="">Select Year</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                </select>
-                            </div>
-
+                            {/* {this.renderInput('course', 'Course', 'text')} */}
+                            {this.renderBranch()}
+                            {this.renderYear()}
                             {this.renderInput('address', 'Permanent Address', 'text')}
                             {this.renderInput('primary_contact', 'Primary Contact', 'text')}
-
                         </div>
-
                         <div className="col-sm-6">
                             {this.renderInput('father_name', 'Father\'s name ', 'text')}
                             {this.renderInput('mother_name', 'Mother\'s name ', 'text')}
@@ -139,7 +180,8 @@ class Register extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        isRegistered: state.user.uid || null
+        isRegistered: state.user.uid || null,
+        branch: state.branch
     }
 }
 

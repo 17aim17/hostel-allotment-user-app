@@ -69,8 +69,8 @@ const formValidator = (data) => {
         errors.gender = 'Required'
         isError = true
     }
-    if (course.length === 0) {
-        errors.course = 'Required'
+    if (branch.length === 0) {
+        errors.branch = 'Required'
         isError = true
     }
     if (year.length === 0) {

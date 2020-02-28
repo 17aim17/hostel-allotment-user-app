@@ -4,8 +4,7 @@ const initialState = []
 const roomReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_HOSTELS:
-            const rooms = action.payload
-            return [...rooms]
+            return [...action.payload]
         default:
             return state
     }
