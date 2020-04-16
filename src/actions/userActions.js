@@ -1,5 +1,5 @@
 
-import { REGISTER, LOGIN, LOGOUT } from './types'
+import { REGISTER, LOGIN, LOGOUT, ALLOT_ROOM } from './types'
 
 import { database } from '../firebase/firebase'
 
@@ -42,11 +42,48 @@ export const login = () => {
             aadhaar_number: "876595490156",
             account_number: "34458143",
             password: "hello123",
-            isError: "true",
             roomInfo: {
                 isAlloted: false,
                 room_number: null
             }
         }
+    }
+}
+
+export const allotRoom = (id) => {
+    let val = id.split(':');
+    const room_num = val[0];
+    const room_num_occ = val[1];
+    console.log(id);
+    return (dispatch, getState) => {
+        const { branch, year, gender, roll_number } = getState().user;
+        const hostelAlloted = getState().branch[branch][year][gender]
+        const rootRef = `hostels/${hostelAlloted}/${room_num}/${room_num_occ}`
+
+
+        database.ref(rootRef).once('value')
+            .then(snapshot => {
+                if (snapshot.val().occupied == true) {
+                    return window.alert('Selected Room already Alloted to someone else!');
+                }
+                return database.ref(`hostels/${hostelAlloted}/${room_num}/${room_num_occ}`).update({
+                    occupied: true
+                })
+            })
+            .then(() => {
+                dispatch({
+                    type: ALLOT_ROOM,
+                    payload: {
+                        roomInfo: {
+                            isAlloted: true,
+                            hostel: hostelAlloted,
+                            room_number: id,
+                        }
+                    }
+                })
+            })
+            .catch(e => {
+                console.log(e);
+            })
     }
 }

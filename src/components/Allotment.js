@@ -4,6 +4,8 @@ import _ from 'lodash'
 
 import Spinner from './Spinner'
 
+import {allotRoom} from '../actions/userActions' 
+
 class Allotment extends Component {
     state = {
         selectedRoom: null,
@@ -17,7 +19,8 @@ class Allotment extends Component {
                 error: "Select a room!"
             })
         } else {
-            console.log("submitted " + this.state.selectedRoom);
+            // console.log("submitted " + this.state.selectedRoom);
+            this.props.allotRoom(this.state.selectedRoom)
         }
 
     }
@@ -39,7 +42,7 @@ class Allotment extends Component {
             if (occupancy > 1) {
                 label += String.fromCharCode(64 + num)
             }
-            let className = "col btn btn-outline-primary m-1 hover "
+            let className = "col btn btn-outline-primary m-1 "
             if (this.state.selectedRoom === id) {
                 className += "bg-primary text-light"
             }
@@ -118,4 +121,4 @@ const mapSateToProps = (state) => {
     }
 }
 
-export default connect(mapSateToProps, null)(Allotment);
+export default connect(mapSateToProps, {allotRoom})(Allotment);

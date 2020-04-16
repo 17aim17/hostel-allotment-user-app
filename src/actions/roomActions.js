@@ -57,7 +57,9 @@ export const setHostels = data => ({
 
 const toStateForm = snapshot => {
     let output = {};
+    console.log(snapshot);
     snapshot.forEach(snap => {
+
         let data = {};
         data["name"] = snap.val().name;
         data["rooms"] = [];
@@ -128,5 +130,7 @@ export const startSetHostel = () => {
 //     });
 //     return data;
 // };
+
+
 
 
