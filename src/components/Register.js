@@ -126,6 +126,13 @@ class Register extends Component {
     }
 
     render() {
+        if (!_.isEmpty(this.props.session) && !this.props.session.register.state) {
+            return (
+                <div className="container mt-5 text-center">
+                    <h3 className="text-danger">Registrations are closed</h3>
+                </div>
+            )
+        }
         return (
             <div className="container my-4 card card-body">
                 <h2 className="card-title mx-auto "> <i className="fas fa-users"></i>  Student Registration</h2>
@@ -181,7 +188,8 @@ class Register extends Component {
 const mapStateToProps = (state) => {
     return {
         isRegistered: state.user.uid || null,
-        branch: state.branch
+        branch: state.branch,
+        session: state.session
     }
 }
 

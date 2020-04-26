@@ -19,6 +19,8 @@ export const register = (data) => (dispatch, getState) => {
                 ...data
             }
         })
+        history.push('/login')
+        window.alert('You are registered successfully')
     })
 }
 

@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 import Spinner from './Spinner'
 
-import {allotRoom} from '../actions/userActions' 
+import { allotRoom } from '../actions/userActions'
 
 class Allotment extends Component {
     state = {
@@ -37,10 +37,10 @@ class Allotment extends Component {
     renderIndividualRoom = ({ roomNumber, obj, occupancy }) => {
         let num = parseInt(obj.value)
         if (!obj.occupied) {
-            let id = roomNumber 
+            let id = roomNumber
             let label = roomNumber
             if (occupancy > 1) {
-                id= id +":" + num
+                id = id + ":" + num
                 label += String.fromCharCode(64 + num)
             }
             let className = "col btn btn-outline-dark m-1"
@@ -58,10 +58,10 @@ class Allotment extends Component {
     }
 
     renderRooms = (roomsData) => {
-        const { id, rooms, name } = roomsData
+        const { rooms, name } = roomsData
         return (
             <div className="container mt-4">
-                <h3 className="text-center"><i className="fas fa-hotel"></i> {id + ' ' + name}</h3>
+                <h3 className="text-center"><i className="fas fa-hotel"></i> {this.props.hostelAlloted + ' ' + name}</h3>
                 {this.state.error && <div className="alert alert-warning" role="alert">{this.state.error}</div>}
                 <div className="row mt-4">
                     {
@@ -77,9 +77,9 @@ class Allotment extends Component {
                 <div className="mt-3 text-center">
                     {this.state.error && <div className="alert alert-warning" role="alert">{this.state.error}</div>}
                     <button className="btn btn-primary btn-lg"
-                     onClick={this.handelAllot}
-                     >
-                     <i className="fas fa-key"></i>
+                        onClick={this.handelAllot}
+                    >
+                        <i className="fas fa-key"></i>
                      Allot Room
                      </button>
                 </div>
@@ -90,27 +90,30 @@ class Allotment extends Component {
     }
 
     render() {
-        if (!_.isEmpty(this.props.session) && !this.props.session.allocate) {
+
+        if (!_.isEmpty(this.props.session) && !this.props.session.allocate.state) {
             return (
-                <div className="container mt-5 text-info ">Allotment hasn't started yet</div>
+                <div className="container mt-5 text-center">
+                    <h3 className="text-danger"> Allotment hasn't started yet</h3>
+                </div>
             )
         }
         else if (!_.isEmpty(this.props.user) && this.props.user.roomInfo.isAlloted) {
             const { room_number, hostel } = this.props.user.roomInfo
             return (
                 <div className=" container mt-5 text-center">
-                <div className="card">
-                    <div className="card-body">
-                    <h2 className="card-title text-success"> Allotment Successfull </h2>
-                    <h3><span>Your Hostel Name :  </span> <span className="text-success">{hostel}</span> </h3>
-                    <h3><span>Your Room number : </span> <span className="text-success">{room_number}</span></h3>
+                    <div className="card">
+                        <div className="card-body">
+                            <h2 className="card-title text-success"> Allotment Successfull </h2>
+                            <h3><span>Your Hostel Name :  </span> <span className="text-success">{hostel}</span> </h3>
+                            <h3><span>Your Room number : </span> <span className="text-success">{room_number}</span></h3>
+                        </div>
                     </div>
-                </div>
                 </div>
             )
         }
 
-        else if (!_.isEmpty(this.props.rooms) && this.props.rooms.id !== null) {
+        else if (!_.isEmpty(this.props.rooms) && this.props.hostelAlloted) {
             return this.renderRooms(this.props.rooms)
         }
 
@@ -128,9 +131,10 @@ const mapSateToProps = (state) => {
     }
     return {
         user: state.user,
-        rooms: { id: hostelAlloted, ...rooms },
-        sessions: state.sessions
+        hostelAlloted: hostelAlloted,
+        rooms: { ...rooms },
+        session: state.session
     }
 }
 
-export default connect(mapSateToProps, {allotRoom})(Allotment);
+export default connect(mapSateToProps, { allotRoom })(Allotment);
