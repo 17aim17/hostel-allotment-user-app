@@ -30,10 +30,10 @@ export const login = () => {
             full_name: "Isaac Shawn",
             email: "Virgil.Keeling86@yahoo.com",
             roll_number: "87326",
-            gender: "M",
+            gender: "F",
             course: "Senior Communications Agent",
             branch: "BARCH",
-            year: "1",
+            year: "3",
             address: "655 Brakus Inlet Jalenberg West Virginia",
             primary_contact: "8765954901",
             father_name: "Clyde Jamal",
@@ -44,17 +44,35 @@ export const login = () => {
             password: "hello123",
             roomInfo: {
                 isAlloted: false,
+                hostel: null,
                 room_number: null
             }
         }
     }
 }
 
-export const allotRoom = (id) => {
+const roomNumberAndOccupancyResolve = (id) => {
+    const data = {
+        room_num: null,
+        room_num_occ: null,
+        alphabet: null
+    }
     let val = id.split(':');
-    const room_num = val[0];
-    const room_num_occ = val[1];
-    console.log(id);
+    data.room_num = val[0];
+    data.room_num_occ = parseInt(val[1]);
+    data.alphabet = String.fromCharCode(64 + data.room_num_occ);
+    if (!data.room_num_occ) {
+        data.room_num_occ = 1
+        data.alphabet = ""
+    }
+
+    return data
+}
+
+export const allotRoom = (id) => {
+    const { room_num, room_num_occ, alphabet } = roomNumberAndOccupancyResolve(id)
+    console.log(roomNumberAndOccupancyResolve(id));
+
     return (dispatch, getState) => {
         const { branch, year, gender, roll_number } = getState().user;
         const hostelAlloted = getState().branch[branch][year][gender]
@@ -63,12 +81,15 @@ export const allotRoom = (id) => {
 
         database.ref(rootRef).once('value')
             .then(snapshot => {
+
                 if (snapshot.val().occupied == true) {
                     return window.alert('Selected Room already Alloted to someone else!');
                 }
                 return database.ref(`hostels/${hostelAlloted}/${room_num}/${room_num_occ}`).update({
                     occupied: true
                 })
+                // console.log(snapshot);
+
             })
             .then(() => {
                 dispatch({
@@ -77,10 +98,12 @@ export const allotRoom = (id) => {
                         roomInfo: {
                             isAlloted: true,
                             hostel: hostelAlloted,
-                            room_number: id,
+                            room_number: `${room_num}${alphabet}`,
                         }
                     }
                 })
+                // console.log('there');
+
             })
             .catch(e => {
                 console.log(e);

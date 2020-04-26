@@ -127,8 +127,8 @@ class Register extends Component {
 
     render() {
         return (
-            <div className="container border my-4 p-0">
-                <h2 className="card-title text-center p-2 bg-primary text-light">Register</h2>
+            <div className="container my-4 card card-body">
+                <h2 className="card-title mx-auto "> <i className="fas fa-users"></i>  Student Registration</h2>
                 <form onSubmit={this.onSubmit} autoComplete="off" className="p-sm-4 needs-validation" noValidate>
                     {this.state.isError && <div className="alert alert-warning" role="alert">
                         Fix all the errors please</div>}
@@ -167,7 +167,7 @@ class Register extends Component {
                     <div className="row">
                         <div className="col-sm-4"></div>
                         <div className="col-sm-4">
-                            <button className="btn btn-block btn-primary btn-lg">Register</button>
+                            <button className="btn btn-block btn-primary btn-lg"> <i className="far fa-paper-plane"></i> Register</button>
                         </div>
                         <div className="col-sm-4"></div>
                     </div>

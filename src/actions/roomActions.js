@@ -57,7 +57,7 @@ export const setHostels = data => ({
 
 const toStateForm = snapshot => {
     let output = {};
-    console.log(snapshot);
+
     snapshot.forEach(snap => {
 
         let data = {};
@@ -95,6 +95,8 @@ export const startSetHostel = () => {
                 // snapshot.forEach(childSnap => {
                 //     modifiedData[childSnap.key] = { ...childSnap.val() }
                 // })
+
+
                 let modifiedData = toStateForm(snapshot);
                 dispatch(setHostels(modifiedData));
             })

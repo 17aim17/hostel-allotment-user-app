@@ -37,14 +37,15 @@ class Allotment extends Component {
     renderIndividualRoom = ({ roomNumber, obj, occupancy }) => {
         let num = parseInt(obj.value)
         if (!obj.occupied) {
-            const id = roomNumber + ":" + num
+            let id = roomNumber 
             let label = roomNumber
             if (occupancy > 1) {
+                id= id +":" + num
                 label += String.fromCharCode(64 + num)
             }
-            let className = "col btn btn-outline-primary m-1 "
+            let className = "col btn btn-outline-dark m-1"
             if (this.state.selectedRoom === id) {
-                className += "bg-primary text-light"
+                className = "col btn btn-dark m-1"
             }
             return (
                 <div className={className} key={id} onClick={() => this.handelSelect(id)}>
@@ -59,8 +60,8 @@ class Allotment extends Component {
     renderRooms = (roomsData) => {
         const { id, rooms, name } = roomsData
         return (
-            <div className="container mt-2">
-                <h3 className="text-center">{id + ' ' + name}</h3>
+            <div className="container mt-4">
+                <h3 className="text-center"><i className="fas fa-hotel"></i> {id + ' ' + name}</h3>
                 {this.state.error && <div className="alert alert-warning" role="alert">{this.state.error}</div>}
                 <div className="row mt-4">
                     {
@@ -73,9 +74,14 @@ class Allotment extends Component {
                         })
                     }
                 </div>
-                <div className="mt-3">
+                <div className="mt-3 text-center">
                     {this.state.error && <div className="alert alert-warning" role="alert">{this.state.error}</div>}
-                    <button className="btn btn-info btn-block btn-lg" onClick={this.handelAllot}>Allot Room</button>
+                    <button className="btn btn-primary btn-lg"
+                     onClick={this.handelAllot}
+                     >
+                     <i className="fas fa-key"></i>
+                     Allot Room
+                     </button>
                 </div>
 
             </div>
@@ -90,10 +96,16 @@ class Allotment extends Component {
             )
         }
         else if (!_.isEmpty(this.props.user) && this.props.user.roomInfo.isAlloted) {
-            const { room_number } = this.props.user.roomInfo
+            const { room_number, hostel } = this.props.user.roomInfo
             return (
-                <div>
-                    <div className="container mt-5 text-info ">You are alloted Room no. {room_number}</div>
+                <div className=" container mt-5 text-center">
+                <div className="card">
+                    <div className="card-body">
+                    <h2 className="card-title text-success"> Allotment Successfull </h2>
+                    <h3><span>Your Hostel Name :  </span> <span className="text-success">{hostel}</span> </h3>
+                    <h3><span>Your Room number : </span> <span className="text-success">{room_number}</span></h3>
+                    </div>
+                </div>
                 </div>
             )
         }
