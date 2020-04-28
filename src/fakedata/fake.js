@@ -4,7 +4,7 @@ export default {
     full_name: faker.name.firstName() + " " + faker.name.firstName(),
     email: faker.internet.email(),
     roll_number: faker.random.number(),
-    gender: 'male',
+    gender: 'M',
     course: faker.name.jobTitle(),
     branch: '',
     year: '',

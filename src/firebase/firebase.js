@@ -1,4 +1,5 @@
 import * as firebase from 'firebase'
+
 // const firebaseConfig = {
 //     apiKey: "AIzaSyDx7w33T_qV83stiWrrC-NDmX3qGGyZ7EM",
 //     authDomain: "hostel-user.firebaseapp.com",
@@ -23,12 +24,16 @@ firebase.initializeApp(firebaseConfig)
 
 const database = firebase.database();
 
+const auth = firebase.auth();
+
 // database.ref('sessions').set({
-//     REGISTER: {
-//         state: false
+//     allocate: {
+//         state: true
 //     },
-//     ALLOCATE: {
-//         state: false
+//     register: {
+//         state: true
 //     }
 // })
-export { firebase, database };
+
+
+export { firebase, database, auth };

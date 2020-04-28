@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
+
 import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
+
+import { startLogout } from '../actions/userActions'
 
 class Header extends Component {
     getLinks = () => {
@@ -13,7 +16,7 @@ class Header extends Component {
                         <NavLink className="nav-link btn text-white" activeClassName="btn-outline-info" to="/allotment">Allot Room</NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink className="nav-link btn text-white" activeClassName="btn-outline-info" to="/logout">Log Out</NavLink>
+                        <a className="nav-link btn text-white" onClick={this.props.startLogout} >Log Out</a>
                     </li> </>
             )
         }
@@ -29,8 +32,6 @@ class Header extends Component {
         )
     }
     render() {
-        console.log(this.props.isLoggedIn);
-
         return (
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div className="container-fluid">
@@ -52,10 +53,9 @@ class Header extends Component {
 }
 
 const mapStateToProps = (state) => {
-
     return {
         isLoggedIn: !!state.user.uid
     }
 }
 
-export default connect(mapStateToProps, null)(Header)
+export default connect(mapStateToProps, { startLogout })(Header)

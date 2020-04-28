@@ -1,57 +1,81 @@
 
 import { REGISTER, LOGIN, LOGOUT, ALLOT_ROOM } from './types'
 
-import { database } from '../firebase/firebase'
+import { database, auth } from '../firebase/firebase'
 
 import history from '../routers/history'
 
-export const register = (data) => (dispatch, getState) => {
-    console.log(data);
+
+export const register = (data) => dispatch => {
+
     data.roomInfo = {
         isAlloted: false,
+        hostel: null,
         room_number: null
     }
-    database.ref('users').push(data).then((ref) => {
+
+    const email = data.email
+    const password = data.password
+
+    delete data['password']
+    delete data['isError']
+    let uid;
+    auth.createUserWithEmailAndPassword(email, password).then((user) => {
+        uid = auth.currentUser.uid;
+        return database.ref(`users/${uid}`).set(data)
+    }).then(() => {
         dispatch({
             type: REGISTER,
             payload: {
-                uid: ref.key,
+                uid,
                 ...data
             }
         })
-        history.push('/login')
+        history.push('/dashboard')
         window.alert('You are registered successfully')
+    }).catch(e => {
+        window.alert(e.message)
+        console.log(e.message);
     })
 }
 
-export const login = () => {
-    return {
-        type: LOGIN,
-        payload: {
-            uid: "-M1Bb6pLhmM8lzw5TpwO",
-            full_name: "Isaac Shawn",
-            email: "Virgil.Keeling86@yahoo.com",
-            roll_number: "87326",
-            gender: "F",
-            course: "Senior Communications Agent",
-            branch: "BARCH",
-            year: "3",
-            address: "655 Brakus Inlet Jalenberg West Virginia",
-            primary_contact: "8765954901",
-            father_name: "Clyde Jamal",
-            mother_name: "Corbin Kevon",
-            parent_contact: "8765954901",
-            aadhaar_number: "876595490156",
-            account_number: "34458143",
-            password: "hello123",
-            roomInfo: {
-                isAlloted: false,
-                hostel: null,
-                room_number: null
+export const login = (uid) => dispatch => {
+    return database.ref(`users/${uid}`).once('value').then((snapshot) => {
+        dispatch({
+            type: LOGIN,
+            payload: {
+                uid,
+                ...snapshot.val()
             }
-        }
-    }
+        })
+        history.push('/dashboard')
+    })
 }
+
+export const startLogin = (data) => dispatch => {
+    const { email, password } = data
+    auth.signInWithEmailAndPassword(email, password).then(() => {
+        login(auth.currentUser.uid)
+    }).catch(e => {
+        console.log(e.message);
+        window.alert(e.message)
+        history.push('/login')
+    })
+
+}
+
+export const logout = () => {
+    return {
+        type: 'LOGOUT'
+    };
+};
+
+export const startLogout = () => dispatch => {
+    auth.signOut()
+    history.push('/')
+    dispatch(logout())
+};
+
 
 const roomNumberAndOccupancyResolve = (id) => {
     const data = {
@@ -76,36 +100,36 @@ export const allotRoom = (id) => {
     console.log(roomNumberAndOccupancyResolve(id));
 
     return (dispatch, getState) => {
-        const { branch, year, gender, roll_number } = getState().user;
+        const { uid, branch, year, gender, roll_number } = getState().user;
         const hostelAlloted = getState().branch[branch][year][gender]
         const rootRef = `hostels/${hostelAlloted}/${room_num}/${room_num_occ}`
+
+        const roomInfo = {
+            isAlloted: true,
+            hostel: hostelAlloted,
+            room_number: `${room_num}${alphabet}`,
+        }
 
 
         database.ref(rootRef).once('value')
             .then(snapshot => {
-
                 if (snapshot.val().occupied == true) {
                     return window.alert('Selected Room already Alloted to someone else!');
                 }
                 return database.ref(`hostels/${hostelAlloted}/${room_num}/${room_num_occ}`).update({
-                    occupied: true
+                    occupied: true,
+                    by: roll_number
                 })
-                // console.log(snapshot);
 
             })
             .then(() => {
+                return database.ref(`/users/${uid}`).update({ roomInfo })
+
+            }).then(() => {
                 dispatch({
                     type: ALLOT_ROOM,
-                    payload: {
-                        roomInfo: {
-                            isAlloted: true,
-                            hostel: hostelAlloted,
-                            room_number: `${room_num}${alphabet}`,
-                        }
-                    }
+                    payload: roomInfo
                 })
-                // console.log('there');
-
             })
             .catch(e => {
                 console.log(e);

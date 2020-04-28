@@ -1,4 +1,4 @@
-import { REGISTER, LOGIN, ALLOT_ROOM } from '../actions/types'
+import { REGISTER, LOGIN, ALLOT_ROOM, LOGOUT } from '../actions/types'
 
 const initialState = {}
 
@@ -6,12 +6,13 @@ const initialState = {}
 const userReducer = (state = initialState, action) => {
     switch (action.type) {
         case REGISTER:
-            console.log(action.payload);
             return { ...action.payload }
         case LOGIN:
             return { ...action.payload }
         case ALLOT_ROOM:
-            return { ...state, ...action.payload }
+            return { ...state, roomInfo: { ...action.payload } }
+        case LOGOUT:
+            return initialState
         default:
             return state
     }
