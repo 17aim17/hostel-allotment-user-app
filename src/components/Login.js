@@ -35,7 +35,7 @@ class Login extends Component {
                                 <input type="password" className="form-control" name="password" value={this.state.password} onChange={this.onChange} />
                             </div>
                             <div className="form-group">
-                                <button className="btn btn-block btn-outline-primary"> <i className="fas fa-sign-in-alt"></i> Login</button>
+                                <button className="btn btn-block btn-primary"> <i className="fas fa-sign-in-alt"></i> Login</button>
                             </div>
                         </form>
                     </div>

@@ -9,15 +9,17 @@ class Header extends Component {
     getLinks = () => {
         if (this.props.isLoggedIn) {
             return (
-                <><li className="nav-item">
-                    <NavLink className="nav-link btn text-white" activeClassName="btn-outline-info" to="/dashboard">Dashboard</NavLink>
-                </li>
+                <>
+                    <li className="nav-item">
+                        <NavLink className="nav-link btn text-white" activeClassName="btn-outline-info" to="/dashboard">Dashboard</NavLink>
+                    </li>
                     <li className="nav-item">
                         <NavLink className="nav-link btn text-white" activeClassName="btn-outline-info" to="/allotment">Allot Room</NavLink>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link btn text-white" onClick={this.props.startLogout} >Log Out</a>
-                    </li> </>
+                        <p className="nav-link btn text-white" onClick={this.props.startLogout} >Log Out</p>
+                    </li>
+                </>
             )
         }
         return (

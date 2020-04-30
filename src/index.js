@@ -18,7 +18,7 @@ reduxStore.dispatch(startSetHostel())
 
 firebase.auth().onAuthStateChanged(user => {
     if (user) {
-        console.log(user);
+
         reduxStore.dispatch(login(user.uid));
     } else {
         reduxStore.dispatch(logout());

@@ -66,7 +66,7 @@ export const startLogin = (data) => dispatch => {
 
 export const logout = () => {
     return {
-        type: 'LOGOUT'
+        type: LOGOUT
     };
 };
 
@@ -113,7 +113,7 @@ export const allotRoom = (id) => {
 
         database.ref(rootRef).once('value')
             .then(snapshot => {
-                if (snapshot.val().occupied == true) {
+                if (snapshot.val().occupied === true) {
                     return window.alert('Selected Room already Alloted to someone else!');
                 }
                 return database.ref(`hostels/${hostelAlloted}/${room_num}/${room_num_occ}`).update({

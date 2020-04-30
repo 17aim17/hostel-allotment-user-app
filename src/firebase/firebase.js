@@ -26,13 +26,9 @@ const database = firebase.database();
 
 const auth = firebase.auth();
 
-// database.ref('sessions').set({
-//     allocate: {
-//         state: true
-//     },
-//     register: {
-//         state: true
-//     }
+// database.ref('admins').push({
+//     email: "17aim17@gmail.com",
+//     name: "Ashish Kumar"
 // })
 
 
